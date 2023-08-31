@@ -39,7 +39,7 @@ Para información detallada sobre los procesos que realiza el software, ver [Ane
 ## Tecnologias Utilizadas
 - Lenguaje de programación: Java.
 - Herramienta de automatización: Selenium.
-- Web Driver: Chrome.
+- Web Driver: Chrome Versión 114.0.5735.90.
 
 ## Paso a Paso del Código
 
@@ -80,4 +80,4 @@ WebDriver driver = new ChromeDriver();
 
 ## Corrección de Errores
 
-- Se actualiza el Web Driver de Google Chrome para que sea compatible con la versión actual del navegador.
+- Se actualiza el Web Driver de Google Chrome para que sea compatible con la versión actual del navegador, versión final del webdriver 116.0.5845.96 y versión final de Google Chrome 116.0.5845.111
