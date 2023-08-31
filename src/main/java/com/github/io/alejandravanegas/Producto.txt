@@ -1,0 +1,5 @@
+keyword, nompreProducto
+13, iphone 13
+dualsense, control dualsense PS5
+Sony, TV Sony 53
+mouse, Mouse gamer Logitech
