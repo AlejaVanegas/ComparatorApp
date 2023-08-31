@@ -13,9 +13,7 @@ import java.io.IOException;
 
 public class AppProduct {
     public static void main(String[] args) throws CsvValidationException {
-        // Scanner read = new Scanner(System.in).useDelimiter("\n");
-
-        // declaration and instantiation of objects/variables
+// declaration and instantiation of objects/variables
 
         String productFile = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Producto.txt";
         System.setProperty("webdriver.chrome.driver", "C:\\Zenware\\NewDriver\\chromedriver-win64\\chromedriver.exe");
