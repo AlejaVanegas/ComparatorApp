@@ -6,18 +6,21 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.*;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class AppProduct {
     public static void main(String[] args) throws CsvValidationException {
-// declaration and instantiation of objects/variables
+        // declaration and instantiation of objects/variables
 
         String productFile = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Producto.txt";
         System.setProperty("webdriver.chrome.driver", "C:\\Zenware\\NewDriver\\chromedriver-win64\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        // Scanner read = new Scanner(System.in).useDelimiter("\n");
 
         ArrayList<String> keywords = new ArrayList<>();
         ArrayList<String> productNames = new ArrayList<>();
@@ -26,11 +29,15 @@ public class AppProduct {
         String keyword = null;
         String productName = null;
 
+        String minProduct = "";
+        String productPage = "";
+        double minPrice = Double.MAX_VALUE;
+
         try {
             reader = new CSVReader(new FileReader(productFile));
             String[] cell = reader.readNext(); // Leera desde el segundo.
             while ((cell = reader.readNext()) != null) {
-                keywords.add(keyword = cell[0]); // Se modifica acorde al producto
+                keywords.add(keyword = cell[0]);
                 productNames.add(productName = cell[1]);
                 System.out.println("The keyword is: " + keyword);
                 System.out.println("The product name is: " + productName);
@@ -187,14 +194,9 @@ public class AppProduct {
                             listaProductos.add(null);
                         }
                     }
-
                 } while (actualPage <= 3);
 
                 // Comparador de precios:
-
-                String minProduct = "";
-                String productPage = "";
-                double minPrice = Double.MAX_VALUE;
 
                 for (Producto product : listaProductos) {
                     if (product != null) {
@@ -214,9 +216,44 @@ public class AppProduct {
                 } else {
                     System.out.println("No se encontró ningún producto válido.");
                 }
-
-                
             }
+
+            String comparador = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Comparaciones.txt";
+
+            try {
+                CSVWriter writer = new CSVWriter(new FileWriter(comparador));
+                String[] encabezados = { "pagina1", "producto1", "precio1", "pagina2", "producto2", "precio2",
+                        "pagina3", "producto3", "precio3" };
+                writer.writeNext(encabezados);
+            
+                int index = 0;
+                while (index < listaProductos.size()) {
+                    Producto producto1 = listaProductos.get(index);
+                    Producto producto2 = (index + 1 < listaProductos.size()) ? listaProductos.get(index + 1) : null;
+                    Producto producto3 = (index + 2 < listaProductos.size()) ? listaProductos.get(index + 2) : null;
+            
+                    String[] fila = {
+                        "Fallabella",
+                        (producto1 != null) ? producto1.getName() : "",
+                        (producto1 != null) ? String.valueOf(producto1.getPrice()) : "",
+                        "Mercado Libre",
+                        (producto2 != null) ? producto2.getName() : "",
+                        (producto2 != null) ? String.valueOf(producto2.getPrice()) : "",
+                        "K-Tronix",
+                        (producto3 != null) ? producto3.getName() : "",
+                        (producto3 != null) ? String.valueOf(producto3.getPrice()) : "",
+                    };
+            
+                    writer.writeNext(fila);
+                    System.out.println("- Producto agregado satisfactoriamente al archivo -");
+                    index += 3;
+                }
+                writer.close();
+            
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -224,6 +261,5 @@ public class AppProduct {
         }
 
         driver.close();
-        
     }
 }
