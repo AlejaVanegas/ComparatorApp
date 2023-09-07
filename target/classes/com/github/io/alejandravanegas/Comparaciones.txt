@@ -1,3 +1,4 @@
 "pagina1","producto1","precio1","pagina2","producto2","precio2","pagina3","producto3","precio3"
 "Fallabella","google chromecast 4k última versión reproductor streaming blanco","287900.0","Mercado Libre","google chromecast hd","185250.0","K-Tronix","google chromecast 3","194900.0"
 "Fallabella","plancha de cabello en ceramica remington aguacate y macadamia s9960","179900.0","Mercado Libre","plancha de cabello remington aaa shine therapy s9960 verde 110v","175000.0","K-Tronix","plancha de cabello remington s8500 azul","233900.0"
+

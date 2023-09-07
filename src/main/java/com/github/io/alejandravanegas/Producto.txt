@@ -1,3 +1,2 @@
 keyword, nompreProducto
-chromecast, chromecast
-plancha, plancha remington
+mouse, mouse gamer

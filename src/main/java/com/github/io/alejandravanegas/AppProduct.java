@@ -9,6 +9,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -219,12 +220,17 @@ public class AppProduct {
             }
 
             String comparador = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Comparaciones.txt";
+            File comparadorFile = new File(comparador);
 
             try {
-                CSVWriter writer = new CSVWriter(new FileWriter(comparador));
-                String[] encabezados = { "pagina1", "producto1", "precio1", "pagina2", "producto2", "precio2",
+                boolean fileExists = comparadorFile.exists();
+                CSVWriter writer = new CSVWriter(new FileWriter(comparador, true));
+
+                if (!fileExists) {
+                    String[] encabezados = { "pagina1", "producto1", "precio1", "pagina2", "producto2", "precio2",
                         "pagina3", "producto3", "precio3" };
-                writer.writeNext(encabezados);
+                    writer.writeNext(encabezados);
+                }
             
                 int index = 0;
                 while (index < listaProductos.size()) {
