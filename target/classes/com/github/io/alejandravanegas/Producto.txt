@@ -1,2 +1,4 @@
 keyword, nompreProducto
 mouse, mouse gamer
+TV, tv Samsumg 32 pulgadas
+Logitech, audifonos Logitech

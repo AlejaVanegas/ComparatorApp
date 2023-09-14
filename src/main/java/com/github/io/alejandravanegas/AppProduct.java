@@ -1,10 +1,12 @@
 package com.github.io.alejandravanegas;
 
-import java.util.ArrayList;
-//import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
@@ -13,259 +15,238 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class AppProduct {
     public static void main(String[] args) throws CsvValidationException {
-        // declaration and instantiation of objects/variables
-
-        String productFile = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Producto.txt";
         System.setProperty("webdriver.chrome.driver", "C:\\Zenware\\NewDriver\\chromedriver-win64\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
-        // Scanner read = new Scanner(System.in).useDelimiter("\n");
 
-        ArrayList<String> keywords = new ArrayList<>();
-        ArrayList<String> productNames = new ArrayList<>();
+        ArrayList<Product> productList = new ArrayList<>();
+        ArrayList<PageAttributes> attributes = new ArrayList<>();
+        ArrayList<Keyword> keywords = new ArrayList<>();
 
         CSVReader reader = null;
-        String keyword = null;
-        String productName = null;
 
-        String minProduct = "";
-        String productPage = "";
-        double minPrice = Double.MAX_VALUE;
+        String productFile = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Producto.txt";
 
         try {
             reader = new CSVReader(new FileReader(productFile));
-            String[] cell = reader.readNext(); // Leera desde el segundo.
+            String[] cell = reader.readNext(); // Leera desde la segunda línea.
             while ((cell = reader.readNext()) != null) {
-                keywords.add(keyword = cell[0]);
-                productNames.add(productName = cell[1]);
-                System.out.println("The keyword is: " + keyword);
-                System.out.println("The product name is: " + productName);
-            }
-            // Inicialización del Array List con la clase producto.
-            ArrayList<Producto> listaProductos = new ArrayList<>();
-
-            for (int i = 0; i < keywords.size(); i++) {
-                keyword = keywords.get(i);
-                productName = productNames.get(i);
-                System.out.println("Search for: [ " + productName + " ]");
-                int actualPage = 0;
-
-                do {
-                    actualPage = actualPage + 1;
-
-                    if (actualPage == 1) {
-                        System.out.println("Ingresando a la pagina: -- Falabella --");
-
-                        String pageOne = "https://www.falabella.com.co/falabella-co";
-                        driver.get(pageOne);
-                        try {
-                            WebElement searchPageOne = driver.findElement(By.id("testId-SearchBar-Input"));
-                            searchPageOne.sendKeys(productName);
-                            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                            WebElement searchOne = driver
-                                    .findElement(By.className("SearchBar-module_searchBtnIcon__2L2s0"));
-                            searchOne.click();
-
-                            // Nombre
-                            WebElement productNameF = driver.findElement(By.className("pod-subTitle"));
-                            String productTextNameF = productNameF.getText().toLowerCase();
-                            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-                            if (productTextNameF.contains(keyword.toLowerCase())) {
-
-                                System.out.println("Nombre del producto: " + productTextNameF);
-
-                                // Precio
-                                WebElement productPriceF = driver.findElement(By.xpath("//span[contains(text(),'$')]"));
-                                String productTextPriceF = productPriceF.getText();
-                                System.out.println("Precio del producto: " + productTextPriceF);
-
-                                // Reemplazo del simbolo y punto por espacio en blanco.
-                                String textPriceSymbolF = productTextPriceF.replace("$", "");
-                                String textPriceNoPointF = textPriceSymbolF.replace(".", "");
-                                // Transformación del texto a número.
-                                double priceF = Double.parseDouble(textPriceNoPointF);
-
-                                // Construcción del producto con nombre y precio, agregandolos al Array List
-                                listaProductos.add(new Producto(productTextNameF, priceF, "Falabella"));
-
-                            } else {
-                                System.out.println("El elemento de búsqueda no coincide con el elemento encontrado");
-                                listaProductos.add(null);
-                            }
-
-                        } catch (NoSuchElementException e) {
-                            System.out.println("No se pudo encontrar un elemento en la página.");
-                            listaProductos.add(null);
-                        }
-                    }
-
-                    if (actualPage == 2) {
-
-                        System.out.println("Ingresando a la pagina: -- Mercado Libre -- ");
-                        String pageTwo = "https://www.mercadolibre.com.co/";
-                        driver.get(pageTwo);
-                        try {
-                            WebElement searchPageTwo = driver.findElement(By.id("cb1-edit"));
-                            searchPageTwo.sendKeys(productName);
-                            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                            WebElement searchTwo = driver.findElement(By.className("nav-icon-search"));
-                            searchTwo.click();
-
-                            // Nombre
-                            WebElement productNameM = driver
-                                    .findElement(By.xpath("//h2[@class='ui-search-item__title shops__item-title']"));
-                            String productTextNameM = productNameM.getText().toLowerCase();
-                            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-                            if (productTextNameM.contains(keyword.toLowerCase())) {
-
-                                System.out.println("Nombre del producto: " + productTextNameM);
-
-                                // Precio
-                                WebElement productPriceM = driver
-                                        .findElement(By.xpath("//span[@class='andes-money-amount__fraction']"));
-                                String productTextPriceM = productPriceM.getText();
-                                System.out.println("Precio del producto: " + productTextPriceM);
-
-                                // Reemplazo del simbolo y punto por espacio en blanco.
-                                String textPriceSymbolM = productTextPriceM.replace("$", "");
-                                String textPriceNoPointM = textPriceSymbolM.replace(".", "");
-                                // Transformación del texto a número.
-                                double priceM = Double.parseDouble(textPriceNoPointM);
-
-                                // Construcción del producto con nombre y precio, agregandolos al Array List
-                                listaProductos.add(new Producto(productTextNameM, priceM, "Mercado Libre"));
-
-                            } else {
-                                System.out.println("El elemento de busqueda no coincide con el elemento encontrado");
-                                listaProductos.add(null);
-                            }
-
-                        } catch (NoSuchElementException e) {
-                            System.out.println("No se pudo encontrar un elemento en la página.");
-                            listaProductos.add(null);
-                        }
-                    }
-
-                    if (actualPage == 3) {
-                        System.out.println("Ingresando a la pagina: -- Ktronix -- ");
-                        String pageThree = "https://www.ktronix.com/";
-                        driver.get(pageThree);
-                        try {
-                            WebElement searchPageThree = driver.findElement(By.id("js-site-search-input"));
-                            searchPageThree.sendKeys(productName);
-                            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                            searchPageThree.click();
-                            searchPageThree.sendKeys(Keys.ENTER);
-
-                            // Nombre
-                            WebElement productNameK = driver
-                                    .findElement(By.xpath("//a[contains(@class, 'js-algolia-product-click')]"));
-                            String productTextNameK = productNameK.getText().toLowerCase();
-                            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-
-                            if (productTextNameK.contains(keyword.toLowerCase())) {
-
-                                System.out.println("Nombre del Producto: " + productTextNameK);
-
-                                // Precio
-                                WebElement productPriceK = driver.findElement(By.cssSelector("span.price"));
-                                String priceText = productPriceK.getAttribute("textContent");
-                                System.out.println("Precio del Producto: " + priceText);
-
-                                // Transformación del punto por espacio
-                                String textPriceSymbolK = priceText.replace("$", "");
-                                String textPriceNoPointK = textPriceSymbolK.replace(".", "");
-                                // Transformación del texto a número.
-                                double priceK = Double.parseDouble(textPriceNoPointK);
-
-                                // Construcción del producto con nombre y precio, agregandolos al Array List
-                                listaProductos.add(new Producto(productTextNameK, priceK, "K - Tronix"));
-
-                            } else {
-                                System.out.println("El elemento de busqueda no coincide con el elemento encontrado");
-                                listaProductos.add(null);
-                            }
-
-                        } catch (NoSuchElementException e) {
-                            System.out.println("No se pudo encontrar un elemento en la página.");
-                            listaProductos.add(null);
-                        }
-                    }
-                } while (actualPage <= 3);
-
-                // Comparador de precios:
-
-                for (Producto product : listaProductos) {
-                    if (product != null) {
-                        double actualPrice = product.getPrice();
-                        if (actualPrice < minPrice) {
-                            minPrice = actualPrice;
-                            minProduct = product.getName();
-                            productPage = product.getPage();
-                        }
-                    }
-                }
-
-                if (!minProduct.isEmpty()) {
-                    System.out.println("El producto más económico es: " + minProduct);
-                    System.out.println("Precio: " + minPrice);
-                    System.out.println("Puedes encontrarlo en la pagina: " + productPage);
-                } else {
-                    System.out.println("No se encontró ningún producto válido.");
-                }
-            }
-
-            String comparador = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Comparaciones.txt";
-            File comparadorFile = new File(comparador);
-
-            try {
-                boolean fileExists = comparadorFile.exists();
-                CSVWriter writer = new CSVWriter(new FileWriter(comparador, true));
-
-                if (!fileExists) {
-                    String[] encabezados = { "pagina1", "producto1", "precio1", "pagina2", "producto2", "precio2",
-                        "pagina3", "producto3", "precio3" };
-                    writer.writeNext(encabezados);
-                }
-            
-                int index = 0;
-                while (index < listaProductos.size()) {
-                    Producto producto1 = listaProductos.get(index);
-                    Producto producto2 = (index + 1 < listaProductos.size()) ? listaProductos.get(index + 1) : null;
-                    Producto producto3 = (index + 2 < listaProductos.size()) ? listaProductos.get(index + 2) : null;
-            
-                    String[] fila = {
-                        "Fallabella",
-                        (producto1 != null) ? producto1.getName() : "",
-                        (producto1 != null) ? String.valueOf(producto1.getPrice()) : "",
-                        "Mercado Libre",
-                        (producto2 != null) ? producto2.getName() : "",
-                        (producto2 != null) ? String.valueOf(producto2.getPrice()) : "",
-                        "K-Tronix",
-                        (producto3 != null) ? producto3.getName() : "",
-                        (producto3 != null) ? String.valueOf(producto3.getPrice()) : "",
-                    };
-            
-                    writer.writeNext(fila);
-                    System.out.println("- Producto agregado satisfactoriamente al archivo -");
-                    index += 3;
-                }
-                writer.close();
-            
-            } catch (IOException e) {
-                e.printStackTrace();
+                Keyword keywordList = new Keyword();
+                keywordList.setKeywordName(cell[0]);
+                keywordList.setProductName(cell[1]);
+                keywords.add(keywordList);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        String pages = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Paginas.txt";
+
+        try {
+            reader = new CSVReader(new FileReader(pages));
+            String[] cell = reader.readNext(); // Leera desde la segunda línea.
+            while ((cell = reader.readNext()) != null) {
+                PageAttributes attribute = new PageAttributes();
+                attribute.setPageName(cell[0]);
+                attribute.setPageLink(cell[1]);
+                attribute.setPageSearch(cell[2]);
+                attribute.setPageProduct(cell[3]);
+                attribute.setPagePrice(cell[4]);
+                attributes.add(attribute);
+            }
+
+            // Variables para el producto actual
+            String currentProduct = "";
+            double currentPrice = Double.MAX_VALUE;
+            String currentPage = "";
+
+            // Iterar a través de los productos
+            for (Keyword product : keywords) {
+                currentProduct = product.getProductName();
+                currentPrice = Double.MAX_VALUE;
+                currentPage = "";
+
+                // Iterar a través de las páginas para cada producto
+                for (PageAttributes attribute : attributes) {
+                    System.out.println("Ingresando a la página: -- " + attribute.getPageName() + " --");
+                    System.out.println("Buscando el producto: " + product.getProductName());
+
+                    String page = attribute.getPageLink();
+                    driver.get(page);
+
+                    try {
+                        WebElement searchPage = driver.findElement(By.id(attribute.getPageSearch()));
+
+                        // Si es la página "K-Tronix", realiza un clic antes de enviar las teclas
+                        if (attribute.getPageName().equals("K-Tronix")) {
+                            searchPage.sendKeys(product.getProductName());
+                            searchPage.click();
+                        } else {
+                            searchPage.sendKeys(product.getProductName());
+                        }
+
+                        searchPage.sendKeys(Keys.ENTER);
+                        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+                        // Nombre del producto
+                        WebElement productName = null;
+                        try {
+                            productName = driver.findElement(By.className(attribute.getPageProduct()));
+                        } catch (NoSuchElementException e) {
+                            // Si no se encuentra por clase, intenta encontrarlo por XPath
+                            try {
+                                productName = driver.findElement(By.xpath(attribute.getPageProduct()));
+                            } catch (NoSuchElementException ex) {
+                                // Manejar el caso en que no se puede encontrar el elemento
+                                System.out.println("No se pudo encontrar el elemento en la página.");
+                            }
+                        }
+
+                        if (productName != null) {
+                            String productTextName = productName.getText().toLowerCase();
+                            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+                            if (productTextName.contains(product.getKeywordName().toLowerCase())) {
+                                System.out.println("Nombre del producto: " + productTextName);
+
+                                // Precio del producto
+                                WebElement productPrice = null;
+
+                                try {
+                                    // Intenta encontrar el precio por XPath
+                                    productPrice = driver.findElement(By.xpath(attribute.getPagePrice()));
+                                } catch (NoSuchElementException e) {
+                                    // Si no se encuentra por XPath, intenta encontrarlo por Selector CSS
+                                    try {
+                                        productPrice = driver.findElement(By.cssSelector(attribute.getPagePrice()));
+                                    } catch (NoSuchElementException ex) {
+                                        // Manejar el caso en que no se puede encontrar el elemento del precio
+                                        System.out.println("No se pudo encontrar el elemento del precio en la página.");
+                                    }
+                                }
+
+                                if (productPrice != null) {
+                                    if (attribute.getPageName().equals("K-Tronix")) {
+                                        String priceText = productPrice.getAttribute("textContent");
+                                        System.out.println("Precio del producto: " + priceText);
+
+                                        // Reemplazo del símbolo y punto por espacio en blanco.
+                                        String textPriceSymbol = priceText.replace("$", "");
+                                        String textPriceNoPoint = textPriceSymbol.replace(".", "");
+                                        // Transformación del texto a número.
+                                        double price = Double.parseDouble(textPriceNoPoint);
+                                        productList.add(new Product(productTextName, price, attribute.getPageName()));
+
+                                        // Actualizar el producto actual si el precio es más bajo
+                                        if (price < currentPrice) {
+                                            currentPrice = price;
+                                            currentPage = attribute.getPageName();
+                                        }
+
+                                    } else {
+                                        String productTextPrice = productPrice.getText();
+                                        System.out.println("Precio del producto: " + productTextPrice);
+
+                                        // Reemplazo del símbolo y punto por espacio en blanco.
+                                        String textPriceSymbol = productTextPrice.replace("$", "");
+                                        String textPriceNoPoint = textPriceSymbol.replace(".", "");
+                                        // Transformación del texto a número.
+                                        double price = Double.parseDouble(textPriceNoPoint);
+
+                                        productList.add(new Product(productTextName, price, attribute.getPageName()));
+                                        // Actualizar el producto actual si el precio es más bajo
+                                        if (price < currentPrice) {
+                                            currentPrice = price;
+                                            currentPage = attribute.getPageName();
+                                        }
+
+                                    }
+                                }
+                            }
+
+                        } else {
+                            System.out.println("No se pudo encontrar el elemento del precio en la página.");
+                        }
+
+                    } catch (NoSuchElementException e) {
+                        System.out.println("No se pudo encontrar un elemento en la página.");
+                    }
+                }
+
+                if (!currentProduct.isEmpty()) {
+                    System.out.println("-----------------------------------------------------------");
+                    System.out.println("El producto más económico de '" + currentProduct + "' es: " + currentProduct);
+                    System.out.println("Precio: " + currentPrice);
+                    System.out.println("Puedes encontrarlo en la página: " + currentPage);
+                    System.out.println("-----------------------------------------------------------");
+                }
+
+                for (Product list : productList) {
+                    System.out.println("nombre: " + list.getName());
+                    System.out.println("precio: " + list.getPrice());
+                    System.out.println("pagina:" + list.getPage());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            driver.quit();
+        }
+
+        String comparator = "C:\\Zenware\\Projects\\Selenium\\seleniumlearning\\src\\main\\java\\com\\github\\io\\alejandravanegas\\Comparaciones.txt";
+        File comparatorFile = new File(comparator);
+
+        try {
+            boolean fileExists = comparatorFile.exists();
+
+            try (CSVWriter writer = new CSVWriter(new FileWriter(comparator, true))) {
+                if (!fileExists) {
+                    String[] encabezados = { "pagina1", "producto1", "precio1", "pagina2", "producto2",
+                            "precio2",
+                            "pagina3", "producto3", "precio3" };
+                    writer.writeNext(encabezados);
+                }
+
+                int index = 0;
+                while (index < productList.size()) {
+                    // Agrega una impresión para verificar el inicio del bucle
+                    System.out.println("Iniciando la escritura...");
+
+                    Product producto1 = productList.get(index);
+                    Product producto2 = (index + 1 < productList.size()) ? productList.get(index + 1) : null;
+                    Product producto3 = (index + 2 < productList.size()) ? productList.get(index + 2) : null;
+
+                    String[] fila = {
+                            (producto1 != null) ? producto1.getPage() : "",
+                            (producto1 != null) ? producto1.getName() : "",
+                            (producto1 != null) ? String.valueOf(producto1.getPrice()) : "",
+                            (producto2 != null) ? producto2.getPage() : "",
+                            (producto2 != null) ? producto2.getName() : "",
+                            (producto2 != null) ? String.valueOf(producto2.getPrice()) : "",
+                            (producto3 != null) ? producto3.getPage() : "",
+                            (producto3 != null) ? producto3.getName() : "",
+                            (producto3 != null) ? String.valueOf(producto3.getPrice()) : "",
+                    };
+
+                    // Agrega una impresión para verificar si se está escribiendo en el archivo en
+                    // cada iteración
+                    System.out.println("Escribiendo fila en el archivo: " + Arrays.toString(fila));
+
+                    writer.writeNext(fila);
+                    System.out.println("- Producto agregado satisfactoriamente al archivo -");
+                    index += 3;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        driver.close();
     }
 }

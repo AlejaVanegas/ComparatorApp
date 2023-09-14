@@ -1,0 +1,4 @@
+nombre, URLpagina, barra, nombreProducto, precioProducto
+Falabella, "https://www.falabella.com.co/falabella-co", "testId-SearchBar-Input", "pod-subTitle", "//span[contains(text(),'$')]"
+Mercado Libre, "https://www.mercadolibre.com.co/", "cb1-edit", "//h2[@class='ui-search-item__title shops__item-title']", "//span[@class='andes-money-amount__fraction']"
+K-Tronix, "https://www.ktronix.com/", "js-site-search-input", "//a[contains(@class, 'js-algolia-product-click')]", "span.price"

@@ -1,12 +1,11 @@
 package com.github.io.alejandravanegas;
 
-public class Producto {
-
+public class Product {
     private String name; 
     private double price;
     private String page;
 
-    public Producto(String name, double price, String page) {
+    public Product(String name, double price, String page) {
         this.name = name;
         this.price = price;
         this.page = page; 
@@ -36,5 +35,5 @@ public class Producto {
     public void setPage(String page) {
         this.page = page; 
     }
-
+    
 }

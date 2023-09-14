@@ -1,4 +1,4 @@
-"pagina1","producto1","precio1","pagina2","producto2","precio2","pagina3","producto3","precio3"
-"Fallabella","google chromecast 4k última versión reproductor streaming blanco","287900.0","Mercado Libre","google chromecast hd","185250.0","K-Tronix","google chromecast 3","194900.0"
-"Fallabella","plancha de cabello en ceramica remington aguacate y macadamia s9960","179900.0","Mercado Libre","plancha de cabello remington aaa shine therapy s9960 verde 110v","175000.0","K-Tronix","plancha de cabello remington s8500 azul","233900.0"
-
+"pagina1", "producto1", "precio1", "pagina2", "producto2","precio2","pagina3", "producto3", "precio3"
+"Falabella","mouse gamer vertical ergonomico inalambrico delux m618c 6 botones","59900.0","Mercado Libre","mouse gamer de juego logitech g series lightsync g203 lila","116700.0","K-Tronix","mouse acer nitro alámbrico nmw200 gamer negro","109900.0"
+"Falabella","televisor xiaomi 32 pulgadas led hd smart tv","799900.0","Mercado Libre","smart tv samsung series 4 un32t4300akxzl led tizen hd 32"" 100v/240v","849900.0","K-Tronix","tv samsung 32"" pulgadas 81 cm 32t4300 hd led smart tv","1079900.0"
+"Falabella","audífonos logitech h151 negro","102900.0","Mercado Libre","audífonos gamer inalámbricos logitech g series g435 azul y frambuesa","213764.0","K-Tronix","audífonos de diadema logitech alámbricos on ear h111 negro","59900.0"
